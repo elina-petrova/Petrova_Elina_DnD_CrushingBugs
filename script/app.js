@@ -4,8 +4,10 @@
 	const puzzleButtons = document.querySelectorAll('#buttonHolder img'),
 				puzzlePieces = document.querySelectorAll('.puzzle-pieces img'),
 				dropZones = document.querySelectorAll('.drop-zone'),
-				gameBoard = document.querySelector('.puzzle-board');
+				gameBoard = document.querySelector('.puzzle-board'),
+				dragZone = document.querySelector('.puzzle-pieces');
 	const pieceName =["topLeft", "topRight", "bottomLeft", "bottomRight"];
+
 	function changeImageSet () {
 		//change all the image elements on the page -> draggable image sources,
 
@@ -15,11 +17,19 @@
 		puzzlePieces[index].id =`${piece + this.dataset.puzzleref}`;
 
 	});
+		resetPuzzlePieces();
 
 
 		//and set the drop zone background image on the puzzle the user selects
 		gameBoard.style.backgroundImage = `url(images/backGround${this.dataset.puzzleref}.jpg)`;
 		//debugger;
+	}
+	function resetPuzzlePieces(){
+		//set the original parent for puzzle pieces
+		for(let i=0; i < puzzlePieces.length; i++){
+		dragZone.appendChild(puzzlePieces[i]);
+	    }
+
 	}
 	function allowDrag(event) {
 		console.log('started draggin an image');
@@ -46,6 +56,7 @@
 
 	//click on the bottom buttons to change the puzzle image we're woking with
 	puzzleButtons.forEach(button => button.addEventListener('click', changeImageSet));
+
 
 	puzzlePieces.forEach(piece => piece.addEventListener('dragstart', allowDrag));
 
