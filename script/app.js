@@ -4,8 +4,7 @@
 	const puzzleButtons = document.querySelectorAll('#buttonHolder img'),
 				puzzlePieces = document.querySelectorAll('.puzzle-pieces img'),
 				dropZones = document.querySelectorAll('.drop-zone'),
-				gameBoard = document.querySelector('.puzzle-board'),
-				dragZone = document.querySelector('.puzzle-pieces');
+				gameBoard = document.querySelector('.puzzle-board');
 	const pieceName =["topLeft", "topRight", "bottomLeft", "bottomRight"];
 
 	function changeImageSet () {
@@ -17,20 +16,13 @@
 		puzzlePieces[index].id =`${piece + this.dataset.puzzleref}`;
 
 	});
-		resetPuzzlePieces();
 
 
 		//and set the drop zone background image on the puzzle the user selects
 		gameBoard.style.backgroundImage = `url(images/backGround${this.dataset.puzzleref}.jpg)`;
 		//debugger;
 	}
-	function resetPuzzlePieces(){
-		//set the original parent for puzzle pieces
-		for(let i=0; i < puzzlePieces.length; i++){
-		dragZone.appendChild(puzzlePieces[i]);
-	    }
 
-	}
 	function allowDrag(event) {
 		console.log('started draggin an image');
 
@@ -41,19 +33,50 @@
 		console.log('dragged over a drop zone');
 	}
 	function allowDrop(event) {
-		//event.prevenDefault();
-		console.log('dropped on a drop zone');
-		//go and get the dragged element's ID from the data transfer
-		let currentImage = event.dataTransfer.getData("text/plain");
 
+		let currentImage = event.dataTransfer.getData("text/plain");
+		let droppingImage = document.querySelector(`#${currentImage}`);
+
+		if(this.childNodes.length === 0) {
 		//add that image to whatever drop zone we're dropping out image on
-		event.target.appendChild(document.querySelector(`#${currentImage}`));
+		this.appendChild(droppingImage);
+	}
+		else {
+			isAllFull();
+			if (isFull === 4){
+			console.log(isFull);
+			//exhange positions between two puzzle pieces 
+			droppingImage.parentElement.append(this.firstChild);
+			this.appendChild(droppingImage);
+	}
+	        if (this.childNodes.length === 1) {
+	        	//find empty drop zone and place the puzzle piece there
+	        	//so that we make our chosen drop zone free
+			for (let i=0; i < 4; i++){
+				if (dropZones[i].childNodes.length == 0) {
+					dropZones[i].append(this.firstChild);
+					i = 5;
+				}
+			}
+			//add dropping image to the drop zone
+			this.appendChild(droppingImage);
+
+}
+		console.log('dropped on a drop zone');
+	}
+
+
+	}
+	function isAllFull() { 
+		//check if all puzzle pieces are on the puzzle board
+		isFull = 0;
+		dropZones.forEach(zone => {
+			if (zone.childNodes.length > 0){
+				isFull += 1;
+			}
+		});
 	}
 	//add event handling here
-
-
-
-
 	//click on the bottom buttons to change the puzzle image we're woking with
 	puzzleButtons.forEach(button => button.addEventListener('click', changeImageSet));
 
