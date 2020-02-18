@@ -4,7 +4,8 @@
 	const puzzleButtons = document.querySelectorAll('#buttonHolder img'),
 				puzzlePieces = document.querySelectorAll('.puzzle-pieces img'),
 				dropZones = document.querySelectorAll('.drop-zone'),
-				gameBoard = document.querySelector('.puzzle-board');
+				gameBoard = document.querySelector('.puzzle-board'),
+				dragZone = document.querySelector('.puzzle-pieces');
 	const pieceName =["topLeft", "topRight", "bottomLeft", "bottomRight"];
 
 	function changeImageSet () {
@@ -20,10 +21,17 @@
 
 	});
 
-
+		resetPuzzlePieces();
 		//and set the drop zone background image on the puzzle the user selects
 		gameBoard.style.backgroundImage = `url(images/backGround${this.dataset.puzzleref}.jpg)`;
 		//debugger;
+	}
+
+	function resetPuzzlePieces(){	
+		//set the original parent for puzzle pieces	
+		for(let i=0; i < puzzlePieces.length; i++){	
+		dragZone.appendChild(puzzlePieces[i]);	
+	    }
 	}
 
 	function allowDrag(event) {
