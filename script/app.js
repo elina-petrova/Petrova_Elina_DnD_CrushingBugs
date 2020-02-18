@@ -62,8 +62,10 @@
 			this.appendChild(droppingImage);
 
 }
-		console.log('dropped on a drop zone');
+	
 	}
+	console.log('dropped on a drop zone');
+	isFinished();
 
 
 	}
@@ -76,6 +78,23 @@
 			}
 		});
 	}
+	function isFinished(){
+	let p = 0;
+	isAllFull();
+	if (isFull === 4){
+		dropZones.forEach(zone => {
+			if(zone.dataset.position === zone.firstChild.dataset.position){
+			p += 1;
+			}
+		});
+	}
+
+	if (p == 4){
+		alert('Congrats!You have finished the puzzle!');
+	}
+
+	
+}
 	//add event handling here
 	//click on the bottom buttons to change the puzzle image we're woking with
 	puzzleButtons.forEach(button => button.addEventListener('click', changeImageSet));
