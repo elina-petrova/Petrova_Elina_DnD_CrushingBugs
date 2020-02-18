@@ -14,6 +14,9 @@
 		pieceName.forEach((piece, index) => {
 		puzzlePieces[index].src = `images/${piece + this.dataset.puzzleref}.jpg` ;
 		puzzlePieces[index].id =`${piece + this.dataset.puzzleref}`;
+		//set attribute so that later we can compare it with a drop zone attribute
+		//to see if the puzzle has the right location 
+		puzzlePieces[index].setAttribute('data-position', piece);
 
 	});
 
